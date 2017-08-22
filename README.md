@@ -6,4 +6,4 @@ Misc Tools
 
 ### reduce_size.sh
  - Reduce Backup image
- - ./reduce_size.sh <image filename> <size(xxxM or xxxG)>
+ - ./reduce_size.sh <file> <size(xxxM or xxxG)>
