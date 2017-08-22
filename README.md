@@ -1,9 +1,14 @@
 Misc Tools
 ============================
 
-### Useful misc tools
+### Host Tools
 
 
 ### reduce_size.sh
- - Reduce Backup image
- - ./reduce_size.sh <file> <size(xxxM or xxxG)>
+ - Reduce Backup image (Host Tools)
+``` 
+$ ./reduce_size.sh <file> <size(xxxM or xxxG)>
+```
+
+### on Raspberry Pi
+. tbd
