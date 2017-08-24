@@ -1,0 +1,31 @@
+ROOT_DEV=/dev/mmcblk0
+FDISK_INFO=/run/fdisk.log
+PARTITION_INFO=/run/partition.log
+
+# Get fdisk result
+fdisk -l $ROOT_DEV > $FDISK_INFO
+
+PHYSICAL_TOTAL_SIZE=$(($(cat $FDISK_INFO | grep 'Disk' | grep 'sectors' | awk '{print $(NF-1)}')/2))
+LOGICAL_TOTAL_SIZE=$(($(cat $FDISK_INFO | grep 'Linux' | awk '{print $(3)}')/2))
+ROOTFS_SIZE=$(df | grep 'root' | awk '{print $(2)}')
+REF_SIZE=$((LOGICAL_TOTAL_SIZE * 2))
+REF_ROOTFS_SIZE=$((ROOTFS_SIZE * 2))
+START_OFFSET=$(cat $FDISK_INFO | grep 'Linux' | awk '{print $(2)}')
+
+echo "Total $PHYSICAL_TOTAL_SIZE and $LOGICAL_TOTAL_SIZE, rootfs $ROOTFS_SIZE"
+if [ "$PHYSICAL_TOTAL_SIZE" -gt "$REF_SIZE" ]
+then
+    echo "Re-partitioing Rootfs"
+    # Re-Partition
+    echo "d\n2\nn\np\n2\n$START_OFFSET\n\n\nw\n" > $PARTITION_INFO
+    fdisk $ROOT_DEV < $PARTITION_INFO
+    rm $PARTITION_INFO
+    reboot
+fi
+
+if [ "$PHYSICAL_TOTAL_SIZE" -gt "$REF_ROOTFS_SIZE" ]
+then
+    echo "Re-size Rootfs"
+    resize2fs -p ${ROOT_DEV}p2
+    reboot
+fi
