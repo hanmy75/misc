@@ -1,7 +1,7 @@
 Misc Tools
 ============================
 
-#### Host Tools
+# Host Tools
 
 
 ### reduce_size.sh
@@ -11,7 +11,7 @@ $ ./reduce_size.sh <file> <size(xxxM or xxxG)>
 ```
 
 
-#### on Raspberry Pi
+# on Raspberry Pi
 
 
 ### resize2fs
